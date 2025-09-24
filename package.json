@@ -1,0 +1,24 @@
+{
+  "name": "cab-systrm",
+  "version": "1.0.0",
+  "description": "Simple Cab Booking System with Node.js, Express, MongoDB, EJS, and bcrypt",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Surbhi",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.2",
+    "mongoose": "^7.8.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

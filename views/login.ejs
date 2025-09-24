@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <h2 style="text-align:center; margin-top:20px;">Login</h2>
+  <form action="/login" method="POST" style="display:flex; flex-direction:column; width:300px; margin:auto; gap:10px;">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+
+    <select name="role" required>
+      <option value="">Select Role</option>
+      <option value="user">Rider</option>
+      <option value="driver">Driver</option>
+    </select>
+
+    <button type="submit">Login</button>
+  </form>
+</body>
+</html>

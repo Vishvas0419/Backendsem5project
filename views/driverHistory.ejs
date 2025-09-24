@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Driver Ride History</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    ul { list-style:none; padding:0; max-width:700px; margin:auto; }
+    li { margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:6px; }
+    .status-available { color: green; font-weight:bold; }
+    .status-full { color: red; font-weight:bold; }
+  </style>
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <h2 style="text-align:center; margin-top:20px;">My Ride History</h2>
+
+  <% if (driver.availability && driver.availability.length > 0) { %>
+    <ul>
+      <% driver.availability.forEach(slot => { %>
+        <li>
+          <p><strong>Pickup:</strong> <%= slot.pickup %> | <strong>Drop:</strong> <%= slot.drop %></p>
+          <p><strong>Date:</strong> <%= new Date(slot.date).toLocaleDateString() %> | <strong>Time:</strong> <%= slot.time %></p>
+          <p><strong>Fare per Seat:</strong> ₹<%= slot.fare %> | <strong>Seats Remaining:</strong> <%= slot.seatsAvailable %></p>
+          <p class="status-<%= slot.status %>"><strong>Status:</strong> <%= slot.status %></p>
+
+          <% if(slot.bookedBy && slot.bookedBy.length > 0) { %>
+            <p><strong>Riders Booked:</strong></p>
+            <ul>
+              <% slot.bookedBy.forEach(rider => { %>
+                <li><%= rider.name %> (Seats: <%= rider.seatsBooked %>)</li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p>No riders have booked yet.</p>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p style="text-align:center;">No availability added yet.</p>
+  <% } %>
+</body>
+</html>

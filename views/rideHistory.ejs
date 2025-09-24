@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Ride History</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    ul { list-style:none; padding:0; max-width:600px; margin:auto; }
+    li { margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:6px; }
+    .ongoing { background-color:#e0f7fa; }
+    .completed { background-color:#e0ffe0; }
+    .cancelled { background-color:#ffe0e0; }
+  </style>
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <h2 style="text-align:center; margin-top:20px;">My Ride History</h2>
+
+  <% if(user.rideHistory && user.rideHistory.length > 0) { %>
+    <ul>
+      <% user.rideHistory.forEach(ride => { %>
+        <li class="<%= ride.status %>">
+          <strong>Driver:</strong> <%= ride.driver ? ride.driver.name : "N/A" %> |
+          <strong>Car:</strong> <%= ride.driver ? ride.driver.car : "N/A" %> |
+          <strong>Pickup:</strong> <%= ride.pickup %> |
+          <strong>Drop:</strong> <%= ride.drop %> |
+          <strong>Date:</strong> <%= new Date(ride.date).toLocaleDateString() %> |
+          <strong>Time:</strong> <%= ride.time %> |
+          <strong>Seats:</strong> <%= ride.seatsBooked %> |
+          <strong>Total Fare:</strong> ₹<%= ride.fare %> |
+          <strong>Status:</strong> <%= ride.status %>
+
+          <% if(ride.status === 'ongoing') { %>
+            <form action="/ride/cancel/<%= ride._id %>" method="POST" style="display:inline-block; margin-left:10px;">
+              <button type="submit">Cancel</button>
+            </form>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p style="text-align:center; margin-top:20px;">No rides booked yet.</p>
+  <% } %>
+</body>
+</html>

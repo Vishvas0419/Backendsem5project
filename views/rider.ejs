@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rider Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <h2 style="text-align:center;">Welcome, <%= user.name %></h2>
+
+  <!-- Search Form -->
+  <form method="GET" action="/ride/dashboard" style="text-align:center; margin:20px;">
+    <input type="text" name="pickup" placeholder="Pickup Location" value="<%= pickup || '' %>">
+    <input type="text" name="drop" placeholder="Drop Location" value="<%= drop || '' %>">
+    <input type="date" name="date" value="<%= date ? new Date(date).toISOString().split('T')[0] : '' %>">
+    <button type="submit">Search</button>
+  </form>
+
+  <!-- Driver Cards -->
+  <% if(drivers && drivers.length > 0){ %>
+    <% drivers.forEach(driver => { %>
+      <% driver.availability.forEach((slot, i) => { %>
+        <% if(slot.status === "available"){ %>
+          <div class="card" style="border:1px solid #ccc; padding:10px; margin:10px;">
+            <p><strong>Driver:</strong> <%= driver.name %> | <strong>Car:</strong> <%= driver.car %></p>
+            <p><strong>Pickup:</strong> <%= slot.pickup %> | <strong>Drop:</strong> <%= slot.drop %></p>
+            <p><strong>Date:</strong> <%= new Date(slot.date).toLocaleDateString() %> | <strong>Time:</strong> <%= slot.time %></p>
+            <p><strong>Seats Available:</strong> <%= slot.seatsAvailable %> | <strong>Fare:</strong> ₹<%= slot.fare %></p>
+
+            <form method="POST" action="/ride/book/<%= driver._id %>/<%= i %>">
+              <input type="number" name="seats" placeholder="Seats" min="1" max="<%= slot.seatsAvailable %>" required>
+              <button type="submit">Book</button>
+            </form>
+          </div>
+        <% } %>
+      <% }) %>
+    <% }) %>
+  <% } else if(pickup || drop || date) { %>
+    <p style="text-align:center;">No drivers available for the selected criteria.</p>
+  <% } %>
+
+</body>
+</html>

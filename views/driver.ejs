@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Driver Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .card { border:1px solid #ccc; padding:10px; border-radius:6px; margin-bottom:10px; }
+    ul { list-style:none; padding:0; }
+    li { margin-bottom:8px; padding:5px; border:1px solid #ddd; border-radius:4px; }
+    .booked { margin-top:5px; font-size:14px; color:green; }
+    button { cursor:pointer; background:#007bff; color:white; border:none; padding:5px 10px; border-radius:4px; }
+    button:hover { background:#0056b3; }
+  </style>
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <h2 style="text-align:center; margin-top:20px;">Welcome, <%= driver.name %></h2>
+
+  <!-- Add Availability -->
+  <h3 style="text-align:center; margin-top:20px;">Add Availability</h3>
+  <form action="/driver/addAvailability" method="POST" style="max-width:400px; margin:auto; display:flex; flex-direction:column; gap:10px;">
+    <input type="text" name="pickup" placeholder="Pickup Location" required>
+    <input type="text" name="drop" placeholder="Drop Location" required>
+    <input type="date" name="date" required>
+    <input type="time" name="time" required>
+    <input type="number" name="fare" placeholder="Fare per Seat" required>
+    <input type="number" name="seatsAvailable" placeholder="Seats Available" required>
+    <button type="submit">Add Availability</button>
+  </form>
+
+  <!-- Show Availability -->
+  <h3 style="text-align:center; margin-top:30px;">Your Availability</h3>
+  <% if(driver.availability && driver.availability.length > 0) { %>
+    <ul>
+      <% driver.availability.forEach((slot, i) => { %>
+        <li>
+          <strong>Pickup:</strong> <%= slot.pickup %> |
+          <strong>Drop:</strong> <%= slot.drop %> |
+          <strong>Date:</strong> <%= new Date(slot.date).toLocaleDateString() %> |
+          <strong>Time:</strong> <%= slot.time %> |
+          <strong>Seats Available:</strong> <%= slot.seatsAvailable %> |
+          <strong>Fare:</strong> ₹<%= slot.fare %> |
+          <strong>Status:</strong> <%= slot.status %>
+
+          <% if(slot.bookedBy && slot.bookedBy.length > 0){ %>
+            <div class="booked">
+              <strong>Booked By:</strong>
+              <%= slot.bookedBy.map(u => u.name).join(", ") %>
+            </div>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p style="text-align:center;">No availability added yet.</p>
+  <% } %>
+</body>
+</html>
